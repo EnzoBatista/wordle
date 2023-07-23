@@ -9,14 +9,15 @@ type ModalType = {
   modalToggle: () => void;
   title: string;
   modalType: number;
-}
+};
 
 type ModalStyles = {
   open: boolean;
   theme: object;
-}
+};
 
 const StyledModal = styled.div<ModalStyles>`
+  top: 0;
   position: absolute;
   display: ${(props) => (props.open === true ? "flex" : "none")};
   align-items: center;
@@ -24,16 +25,10 @@ const StyledModal = styled.div<ModalStyles>`
   width: 100%;
   height: 100%;
   z-index: 10;
-  background-color: ${(props) => props.theme.palette.grayLight};
+  background-color: ${(props) => props.theme.palette.overlay};
 `;
 
-const Modal = ({
-  isOpen,
-  modalToggle,
-  title,
-  modalType,
-}: ModalType) => {
-
+const Modal = ({ isOpen, modalToggle, title, modalType }: ModalType) => {
   const overlayClickHandler = (event: BaseSyntheticEvent) => {
     if (event.target.childElementCount === 1) {
       modalToggle();
@@ -48,19 +43,8 @@ const Modal = ({
     );
 
   return (
-    <StyledModal
-      onClick={overlayClickHandler}
-      open={isOpen}
-    >
-      <Dialog
-        onClick={overlayClickHandler}
-        isOpen={isOpen}
-        modalToggle={modalToggle}
-        title={title}
-        modalType={modalType}
-      >
-        {modalContent}
-      </Dialog>
+    <StyledModal onClick={overlayClickHandler} open={isOpen}>
+      <Dialog title={title}>{modalContent}</Dialog>
     </StyledModal>
   );
 };

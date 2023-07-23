@@ -1,1 +1,2 @@
-export { ModalTypes} from './Modals';
+export { ModalTypes} from './modals';
+export { WordsExample} from './words-example';
