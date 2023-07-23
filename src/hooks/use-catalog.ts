@@ -3,7 +3,7 @@ import { words } from "../data/words";
 type useCatalogType = [boolean, () => void];
 
 const useCatalog = (): any => {
-  const [word, setWord] = useState("");
+  const [word, setWord] = useState("mejor");
 
   const getCatalog = (length: number = 5) => {
     return words.filter((word) => word.length === length);
@@ -17,8 +17,11 @@ const useCatalog = (): any => {
   const getCorrectIndexes = (typedWord: string) => {
     let correctIndexes = [];
     for (let i = 0; i < word.length; i++) {
-      if (word[i] == typedWord[i]) return;
-      correctIndexes.push(true);
+      if (word[i] === typedWord[i]) {
+        correctIndexes.push({status: true, letter: typedWord[i]});
+      } else {
+        correctIndexes.push({status: true, letter: typedWord[i]});
+      }
     }
     return correctIndexes;
   };

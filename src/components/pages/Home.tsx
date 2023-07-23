@@ -1,24 +1,69 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { ModalTypes } from "../../enums";
 import { WordleContext } from "../../store";
 import { useTheme } from "styled-components";
 import { Modal } from "../templates/modal";
 import { createPortal } from "react-dom";
+import { useCatalog } from "../../hooks";
+
+const boardReducer = (state:any, action:any) => {
+  if (action.type === "ADD_LETTER") {
+    if (state.counter === 5) return;
+    let updatedLetters = state.letters.push(action.letter);
+
+    return {
+      letters: updatedLetters,
+      counter: ++state.counter,
+    };
+  }
+
+  return {
+    letters: [],
+    counter: 0,
+  };
+};
 
 const Home = () => {
   const { modalStatus, modalToggle, sessionID, setSession } =
     useContext(WordleContext);
 
-  const [modalType, setModalType] = useState<number>(0);
   const theme = useTheme();
+
+  const [word, setWord, getCatalog, getRandom, getCorrectIndexes, isInWord] =
+    useCatalog();
+
+  const [modalType, setModalType] = useState<number>(0);
+
+  const [board, dispatchBoard] = useReducer<any>(boardReducer, {
+    letters: [],
+    counter: 0,
+  });
 
   useEffect(() => {
     setModalType(ModalTypes.INSTRUCTIONS);
     modalToggle();
-    if(sessionID !== 1) {
+    if (sessionID !== 1) {
       setSession();
     }
   }, [sessionID]);
+
+  // useEffect(() => {
+  //   console.log("CATALOGO: ", getCatalog());
+  //   console.log("RANDOM_WORD: ", getRandom());
+  //   console.log("RANDOM_WORD: ", getCorrectIndexes("mojer"));
+  // }, []);
+
+  // const addLetterHandler = (item) => {
+      
+  // };
+
+  const keyDownHandler = (event: any) => {
+    console.log("KEY: ", event.key);
+    dispatchBoard({ type: 'ADD_ITEM', letter: event.key });
+    // addLetterHandler();
+  };
+
+  window.addEventListener("keydown", keyDownHandler);
 
   const showInstructionsHandler = () => {
     modalToggle();
@@ -44,8 +89,10 @@ const Home = () => {
         />,
         document.body
       )}
-      { sessionID === 1 && <button onClick={showInstructionsHandler}>SHOW INSTRUCTIONS</button> }
-      
+      {sessionID === 1 && (
+        <button onClick={showInstructionsHandler}>SHOW INSTRUCTIONS</button>
+      )}
+
       <button onClick={showStats}>SHOW STATS</button>
     </>
   );

@@ -5,6 +5,7 @@ import { useState } from "react";
 const WordleProvider = (props: any) => {
   const [modalStatus, setModalStatus] = useToggle(false);
   const [sessionID, setSessionID] = useState<number | null>(null);
+  // const [word, getCatalog] = useCatalog();
 
   const setSession = () => {
     if (!localStorage.getItem("sessionID")) {
