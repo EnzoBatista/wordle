@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalTypes } from "../../enums";
 import { WordleContext } from "../../store";
 import { useTheme } from "styled-components";
@@ -6,9 +6,19 @@ import { Modal } from "../templates/modal";
 import { createPortal } from "react-dom";
 
 const Home = () => {
-  const { modalStatus, modalToggle } = useContext(WordleContext);
+  const { modalStatus, modalToggle, sessionID, setSession } =
+    useContext(WordleContext);
+
   const [modalType, setModalType] = useState<number>(0);
   const theme = useTheme();
+
+  useEffect(() => {
+    setModalType(ModalTypes.INSTRUCTIONS);
+    modalToggle();
+    if(sessionID !== 1) {
+      setSession();
+    }
+  }, [sessionID]);
 
   const showInstructionsHandler = () => {
     modalToggle();
@@ -23,14 +33,19 @@ const Home = () => {
     <>
       {createPortal(
         <Modal
-          title={modalType === ModalTypes.INSTRUCTIONS ? "Cómo jugar" : "Estadísticas"}
+          title={
+            modalType === ModalTypes.INSTRUCTIONS
+              ? "Cómo jugar"
+              : "Estadísticas"
+          }
           modalType={modalType}
           isOpen={modalStatus}
           modalToggle={modalToggle}
         />,
         document.body
       )}
-      <button onClick={showInstructionsHandler}>SHOW INSTRUCTIONS</button>
+      { sessionID === 1 && <button onClick={showInstructionsHandler}>SHOW INSTRUCTIONS</button> }
+      
       <button onClick={showStats}>SHOW STATS</button>
     </>
   );

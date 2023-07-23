@@ -3,11 +3,15 @@ import React from "react";
 type initialCtxType = {
   modalStatus: boolean;
   modalToggle: () => void;
+  sessionID: number | null;
+  setSession: () => void;
 };
 
 const initialCtx: initialCtxType = {
-  modalStatus: true,
-  modalToggle: () => {}
+  modalStatus: false,
+  modalToggle: () => {},
+  sessionID: null,
+  setSession: () => {},
 };
 
 const WordleContext = React.createContext(initialCtx);
