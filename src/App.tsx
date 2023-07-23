@@ -1,16 +1,15 @@
 import "./App.css";
 import { WordleProvider } from "./store";
-import { ThemeProvider } from "@mui/material";
-import { theme } from "./theme";
+import { Theme } from "./theme/Theme";
 import { Home } from "./components/pages";
 
 function App() {
   return (
     <>
       <WordleProvider>
-        <ThemeProvider theme={theme}>
+        <Theme>
           <Home />
-        </ThemeProvider>
+        </Theme>
       </WordleProvider>
     </>
   );
