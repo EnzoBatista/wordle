@@ -1,11 +1,8 @@
-import { Fragment, Suspense, lazy, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ModalTypes } from "../../enums";
 import { WordleContext } from "../../store";
 import { useTheme } from "styled-components";
-
 import { Modal } from "../templates/modal";
-import Dialog from "../molecules/Dialog/Dialog";
-// import ModalInstructions from "../organisms/modal/ModalInstructions";
 
 const Home = () => {
   const { modalStatus, modalToggle } = useContext(WordleContext);
